@@ -1,0 +1,534 @@
+1.
+//Unijeti neki tekst i u funkciji broj_znakova prebrojiti broj znakova.
+//Rezultat ispisati u glavnom programu.
+
+#include<stdio.h>
+#include<string.h>
+int broj_znakova(char c[]);
+int main()
+{
+	char tekst[256];
+	
+	printf("Unesite neki tekst");
+	fflush(stdin);
+	gets(tekst);
+
+	broj_znakova;
+
+	printf("U tekstu ima %d znakova", broj_znakova);
+
+	return 0;
+}
+int broj_znakova(char c[])
+{
+	int brojac;
+	int i = 0;
+	while (c[i] != '\0')
+	{
+		brojac++;
+		i++;
+	}
+
+	return brojac;
+}
+
+2.
+
+// Unijeti neki string. Program neka ispise koliko se puta ponavlja slog "je"
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main()
+{
+    char tekst[256];
+    int brojac = 0, i;
+
+    printf("Unesite neki string: ");
+    fflush(stdin);
+    gets(tekst);
+
+    for (i = 0; i < strlen(tekst); i++)
+    {
+        if (tolower(tekst[i]) == 'j' && tolower(tekst[i + 1]) == 'e')
+        {
+            brojac++;
+        }
+    }
+
+    printf("Slog \"je\" se ponavlja %d puta.\n", brojac);
+
+    return 0;
+}
+
+3.
+
+// Napisati program koji ucitava jedan po jedan string sve dok korisnik ne unese 2 ista stringa zaredom.
+// Program tada ispisuje koliko je ukupno stringova uneseno
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+int main()
+{
+    char string[32][32];
+    int i = 0;
+
+    printf("Unosi stringove:");
+    do
+    {
+        fflush(stdin);
+        gets(string[i++]);
+    } while ((i < 2) || strlen(string[i - 1]) != strlen(string[i - 2])); // strcmp(stringovi[i -1],stringovi[i - 2] ! = 0
+
+    printf("%d", i);
+
+    return 0;
+}
+3a.
+// Napisati program koji ucitava jedan po jedan string sve dok korisnik ne unese 2 ista stringa.
+// Program tada ispisuje koliko je ukupno stringova uneseno
+
+#include <stdio.h>
+#include <string.h>
+int main()
+{
+    char stringovi[100][50];
+    int i = 0, kontrola = 0;
+
+    printf("Unosi stringove:");
+    do
+    {
+        gets(stringovi[i]);
+        for (int j = 0; j < i; j++)
+        {
+            if (i > 2)
+            {
+                if (strcmp(stringovi[i], stringovi[j]) == 0)
+                {
+                    kontrola = 1;
+                }
+            }
+        }
+        i++;
+    } while (kontrola == 0);
+    printf("Uneseno je %d stringova.", i);
+    return 0;
+}
+
+4.
+
+// UCitati neki string unutar funkcije zamijeni znakove potrebno je obrnuti redoslijed znakova
+// Rezultat ispsiati u galvnom programu
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+void obrni_string(char s[])
+{
+    int i, j;
+    for (i = 0, j = strlen(s) - 1; i < j; i++, j--)
+    {
+        int pom = s[i]; // mijenjamo znakove
+        s[i] = s[j];
+        s[j] = pom;
+    }
+}
+int main()
+{
+    char tekst[80];
+    puts("Unesi tekst");
+    gets(tekst);
+    obrni_string(tekst);
+    puts("Ponovni ispis stringa: ");
+    puts(tekst);
+
+    return 0;
+}
+
+5.
+
+// Ucitati neku recenicu. Unutar programa ispisati sumu svih znamenki koje su unesene unutar recenice.
+// npr Danas je 11-4-2024 Program ispisuje 1+1+4+2+0+2+4 => 14
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+int main()
+{
+    char s[30];
+    int i, zbroj = 0;
+    printf("Unesi recenicu: ");
+    gets(s);
+
+    for (i = 0; i < strlen(s); i++)
+    {
+        if (s[i] >= '0' && s[i] <= '9')
+        {
+            zbroj = zbroj + (int)s[i] - '0';
+        }
+    }
+
+    printf("Zbroj svih znakova u recenici je %d", zbroj);
+    return 0;
+}
+
+6.
+
+// Napisati program koje iz ucitanog stringa izdvaja samo karaktrere i sprema ih u drugi string
+//
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+int main()
+{
+    char s1[256], s2[256];
+    int i, j = 0;
+
+    printf("Unesi string:\n");
+    fflush(stdin);
+    gets(s1);
+
+    for (i = 0; i < strlen(s1); i++)
+    {
+        if (isalpha(s1[i]))
+        {
+            s2[j++] = s1[i];
+        }
+    }
+    s2[j] = '\0';
+
+    printf("Novi string: %s", s2);
+
+    return 0;
+}
+
+7.
+
+// Ucitati niz karaktera Ispisati ga na nacin da se iz ucitanog stringa izbace sve tocke
+//
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+void izbaci_tocke(char ulaz[])
+{
+}
+int main()
+{
+    char s[80];
+    int i, j = 0;
+    puts("Ucitaj neki string:");
+    gets(s);
+
+    for (i = 0; i < strlen(s); i++)
+    {
+        if (s[i] != '.')
+        {
+            s[j] = s[i];
+            j++;
+        }
+    }
+    s[j] = '\0';
+    puts("Recenica bez tocaka:");
+    puts(s);
+    return 0;
+}
+
+
+8.
+
+/*
+Potrebno je inicijalizirati strukturu automobil, sa clanovima marka,boja,cijena,
+a zatim ispisati sve automobile  crne boje koji su skuplji od 5000km
+*/
+#include <stdio.h>
+#include <string.h>
+
+struct automobil
+{
+    char marka[32];
+    char boja[32];
+    int cijena;
+};
+
+int main()
+{
+    struct automobil a[5] = {
+        {"BMW", "crna", 15000},
+        {"VW", "crna", 6000},
+        {"Nissan", "crna", 10000},
+        {"Toyota", "crna", 3000},
+        {"Audi", "crna", 2000},
+
+    };
+
+    printf("Automobili crne boje skuplji od 5000 KM:\n");
+    for (int i = 0; i < 5; i++)
+    {
+        if (strcmp(a[i].boja, "crna") == 0 && a[i].cijena > 5000)
+        {
+            printf("Marka: %s, Boja: %s, Cijena: %d KM\n", a[i].marka, a[i].boja, a[i].cijena);
+        }
+    }
+
+    return 0;
+}
+9.
+/*
+Potrebno je inicijalizirati strukturu mobitel, sa clanovima marka,boja,
+cijena,a zatim ispisati najskuplji mobitel koristeci funkciju oblika
+struct mobitel trazi_najskuplji(struct)
+*/
+#include <stdio.h>
+
+struct mobitel
+{
+    char marka[20];
+    char boja[20];
+    int cijena;
+};
+
+struct mobitel trazi_najskuplji(struct mobitel m[], int n);
+
+int main()
+{
+    struct mobitel m[5] =
+        {
+            {"Samsung", "plava", 1000},
+            {"Apple", "bijela", 2000},
+            {"Xiaomi", "crna", 500},
+            {"Huawei", "zuta", 3000},
+            {"Alcatel", "bijela", 150}};
+
+    struct mobitel najskuplji = trazi_najskuplji(m, 5);
+    printf("Najskuplji mobitel: %s\n", najskuplji.marka);
+
+    return 0;
+}
+
+struct mobitel trazi_najskuplji(struct mobitel m[], int n)
+{
+    struct mobitel najskuplji_mobitel = m[0];
+    int i;
+    for (i = 1; i < n; i++)
+    {
+        if (m[i].cijena > najskuplji_mobitel.cijena)
+        {
+            najskuplji_mobitel = m[i];
+        }
+    }
+
+    return najskuplji_mobitel;
+}
+
+10. DOVRSITI TREBA
+/*
+Unijeti podatke o imenima i adresama stanovanja za dvije osoba. Funkcija ispitaj()
+ispituje zive li u istom gradu. Rezultat se ispisuej u glavnom programu
+*/
+#include<stdio.h>
+#include<string.h>
+struct adresa
+{
+    char mjesto[64];
+    char ulica[64];
+    int kucniBroj;
+};
+struct osoba
+{
+    char imena[64];
+    struct adresa sAdresa;
+};
+struct osoba ispitaj(struct osoba o[],int n);
+int main()
+{
+    int i;
+    struct osoba o[2];
+    printf("Unesi podatke za dvije osoba:\n");
+    for(i = 0;i < 2;i++)
+    {   
+        printf("Unesite imena osoba");
+        fflush(stdin);
+        gets(o[i].imena);
+
+        printf("Unesite mjesto stanovanja osoba:\n");
+        fflush(stdin);
+        gets(o[i].sAdresa.)
+
+    }
+    return 0;
+}
+struct osoba ispitaj(struct osoba o[],int n)
+{
+    if(strcmp(o[i].mjest))
+}
+
+11.
+Dovrsit
+/*
+Korisnik unosi niz elemenata tipa strukture Studneta oblika Ime_prezime,
+broj indeksa,godina studija,prosjek.
+Program treba ispisati sve studnete trece godine poredane po prosjeku.
+Ako studneti imaju isti prosjek, ispisuje se onaj student koji je prije po abecedi.
+*/
+
+
+13.
+/*2.
+	Napisati porgram u kojem korisnik unosi 20 brojeva. Brojeve poredane po velicini
+	treba pohraniti u datoteku kao posljednja dva pdoatka dodati njihov zbroj i srednju vrijednost
+	Koristit dinamicki alocirani prostor.
+*/
+#include <stdio.h>
+#include <stdlib.h>
+int main()
+{
+	FILE *dat1;
+	int *niz = NULL, pom;
+	int i, j, zbroj = 0;
+	float srednjaV;
+
+	niz = (int *)malloc(sizeof(int) * 20);
+	if (niz == NULL)
+	{
+		printf("Greska pri alociranju.");
+		return 1;
+	}
+	printf("Unesite 20 brojeva:\n");
+
+	for (i = 0; i < 20; i++)
+	{
+		scanf("%d", &niz[i]);
+		zbroj = zbroj + niz[i];
+	}
+	srednjaV = (float)zbroj / 20;
+
+	for (i = 0; i < 19; i++)
+		for (j = i + 1; j < 20; j++)
+			if (niz[i] < niz[j])
+			{
+				pom = niz[i];
+				niz[i] = niz[j];
+				niz[j] = pom;
+			}
+	dat1 = fopen("nesto.txt", "w");
+	if (dat1 == NULL)
+	{
+		printf("Greska pri otvaranju datoteke.\n");
+		return 1;
+	}
+
+	for (i = 0; i < 20; i++)
+		fprintf(dat1, "%d\n", niz[i]);
+
+	fprintf(dat1, "Zbroj: %d\n", zbroj);
+	fprintf(dat1, "Srednja vrijednost: %f\n", srednjaV);
+
+	free(niz);
+	fclose(dat1);
+
+	return 0;
+}
+14.
+/*3.U tekstualnoj datoci odrediti najduzu liniju. Ako ima vise linija najvece duzine odrediti prvu medu njima,
+Ispisati i duljinu najduze linije.
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int main()
+{
+	FILE *dat1;
+	dat1 = fopen("nesto.txt", "r");
+	if (dat1 == NULL)
+	{
+		printf("Neuspjesno ucitano.\n");
+		return 1;
+	}
+	char linija[256];
+	char najduzaLinija[256];
+	int najduzaDuzina = 0;
+	int duzina = 0;
+
+	while (fgets(linija, sizeof(linija), dat1) != NULL)
+	{
+		duzina = strlen(linija);
+
+		if (duzina > najduzaDuzina)
+		{
+			najduzaDuzina = duzina;
+			strcpy(najduzaLinija, linija);
+		}
+	}
+	fclose(dat1);
+
+	printf("Najduza linija: %s", najduzaLinija);
+	printf("Duzina najduze linije: %d\n", najduzaDuzina);
+	return 0;
+}
+15.
+/*4.
+Ucitati tekstualnu datoteku s diska.Nakon toga stovoriti novu datoteku u
+kojoj ce biti kodirani znakovi iz prethodno ucitane datoteke na nacin da svako slovo bude zamijenjeno slovom koje se po ascii tablici nalazi ispred njega. ostalo znakovi ostaju
+nepromijenjeni.
+*/
+#include <stdio.h>
+#include <stdlib.h>
+
+void karakter(char *ch)
+{
+	if (*ch >= 'a' && *ch <= 'z')
+	{
+		if (*ch == 'a')
+		{
+			*ch = 'z';
+		}
+		else
+		{
+			*ch = *ch - 1;
+		}
+	}
+	else if (*ch >= 'A' && *ch <= 'Z')
+	{
+		if (*ch == 'A')
+		{
+			*ch = 'Z';
+		}
+		else
+		{
+			*ch = *ch - 1;
+		}
+	}
+}
+
+int main()
+{
+	FILE *dat1, *dat2;
+	char ch;
+
+	dat1 = fopen("nesto.txt", "r");
+	if (dat1 == NULL)
+	{
+		printf("Greska pri otvaranju ulazne datoteke!\n");
+		return 1;
+	}
+
+	dat2 = fopen("izlaz.txt", "w");
+	if (dat2 == NULL)
+	{
+		printf("Greska pri otvaranju izlazne datoteke!\n");
+		return 1;
+	}
+
+	while ((ch = fgetc(dat1)) != EOF)
+	{
+		karakter(&ch);
+		fputc(ch, dat2);
+	}
+
+	fclose(dat1);
+	fclose(dat2);
+
+	printf("Kodiranje je zavrseno. Rezultat je pohranjen u datoteku 'izlaz.txt'.\n");
+
+	return 0;
+}
+
+

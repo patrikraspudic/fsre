@@ -1,0 +1,719 @@
+PRVI KOLOKVIJ - GRUPA A:
+
+
+1.
+#include <stdio.h>
+#include <string.h>
+
+/*Napravi program koji unosi stringove sve dok se 3 puta uzastopno ne unesu stringovi 
+sa istim brojem samoglasnika. Nakon toga stringovi se sortiraju silazno po
+broju suglasnika i ispisuju na ekran*/
+
+int prebroji_samoglasnike(char* string) {
+	int brojac = 0;
+	for (int i = 0; i < strlen(string); i++) {
+		if (string[i] == 'a' || string[i] == 'e' || string[i] == 'i' || string[i] == 'o' || string[i] == 'u')
+			brojac++;
+		if (string[i] == 'A' || string[i] == 'E' || string[i] == 'I' || string[i] == 'O' || string[i] == 'U')
+			brojac++;
+	}
+
+	return brojac;
+}
+
+int prebroji_suglasnike(char* string) {
+	int brojac = 0;
+	for (int i = 0; i < strlen(string); i++) {
+		if (string[i] >= 'A' && string[i] <= 'z') {
+			if (string[i] != 'a' && string[i] != 'e' && string[i] != 'i' && string[i] != 'o' && string[i] != 'u' || string[i] != 'A' && string[i] != 'E' && string[i] != 'I' && string[i] != 'O' && string[i] != 'U')
+				brojac++;
+		}
+	}
+
+	return brojac;
+}
+
+int main()
+{
+	char string[30][30], pomString[30];
+	int suglasnici_stringova[30], kontrola = 0, brojac_samoglasnika, i = 0, broj_unesenih = 0, j, pomInt;
+	while (kontrola < 3) {
+		fgets(string[i], 30, stdin);
+		brojac_samoglasnika = prebroji_samoglasnike(string[i]);
+		i++;
+		kontrola++;
+		while (1) {
+			fgets(string[i], 30, stdin);
+			i++;
+			kontrola++;
+			if (prebroji_samoglasnike(string[i-1]) != brojac_samoglasnika) {
+				brojac_samoglasnika = prebroji_samoglasnike(string[i-1]);
+				kontrola = 1;
+				continue;
+			}
+			else
+			{
+				fgets(string[i], 30, stdin);
+				i++;
+				if (prebroji_samoglasnike(string[i-1]) != brojac_samoglasnika) {
+					brojac_samoglasnika = prebroji_samoglasnike(string[i-1]);
+					kontrola = 1;
+					continue;
+				}
+				else {
+					kontrola++;
+					break;
+				}
+			}
+				
+		}
+	}
+	broj_unesenih = i;
+
+	for (i = 0; i < broj_unesenih; i++)
+		suglasnici_stringova[i] = prebroji_suglasnike(string[i]);
+		
+	for(i = 0 ; i < broj_unesenih-1; i++)
+		for (j = i + 1; j < broj_unesenih; j++) 
+			if (suglasnici_stringova[i] < suglasnici_stringova[j]) {
+				pomInt = suglasnici_stringova[i];
+				suglasnici_stringova[i] = suglasnici_stringova[j];
+				suglasnici_stringova[j] = pomInt;
+				strcpy(pomString, string[i]);
+				strcpy(string[i], string[j]);
+				strcpy(string[j], pomString);
+			}
+	
+        printf("\nSortirani stringovi:\n:");	
+	for (i = 0; i < broj_unesenih; i++)
+		printf("%s",string[i]);
+
+	return 0;
+}
+
+2.
+#include <stdio.h>
+#include <string.h>
+
+/*Napravi program koji definira strukturu za zapis podataka o mostarskim gradskim kaficima: naziv
+kafica, adresa, ime vlasnika i kapacitet kafica (broj stolica). Program unosi podatke za 10 kafica i
+ispisuje nazive kafica čiji je kapacitet manji od 100 sortirane po imenu vlasnika, odnosno nazivu
+kafica ako je vlasnik isti*/
+
+struct kafic {
+	char naziv[20];
+	char adresa[20];
+	char ime_vlasnika[20];
+	int kapacitet;
+};
+
+int main()
+{
+	struct kafic k[10], pom;
+	char pom2; //nakon scanf() za kapacitet, \n ide u pom2 od enter-a, na taj nacin \n ne ide u k[i].naziv u iducoj iteraciji
+	for (int i = 0; i < 10; i++) {
+		fgets(k[i].naziv, 20, stdin);
+		fgets(k[i].adresa, 20, stdin);
+		fgets(k[i].ime_vlasnika, 20, stdin);
+		scanf("%d", &k[i].kapacitet);	
+		scanf("%c", &pom2);
+	}
+	for (int i = 0; i < 9; i++)
+		for (int j = i+1; j < 10; j++)
+			if (strcmp(k[i].ime_vlasnika, k[j].ime_vlasnika) > 0) {
+				pom = k[i];
+				k[i] = k[j];
+				k[j] = pom;
+			}
+			else if ((strcmp(k[i].ime_vlasnika, k[j].ime_vlasnika) == 0) && (strcmp(k[i].naziv, k[j].naziv) > 0)) {
+				pom = k[i];
+				k[i] = k[j];
+				k[j] = pom;
+			}
+
+
+	for (int i = 0; i < 10; i++)
+		if (k[i].kapacitet < 100)
+			printf("\nNaziv kafica: %sAdresa: %sIme_vlasnika: %sKapacitet: %d\n", k[i].naziv, k[i].adresa, k[i].ime_vlasnika, k[i].kapacitet);
+
+	return 0;
+}
+
+3.
+#include <stdio.h>
+#include <string.h>
+
+/*Napravi program koji unosi recenice i pohranjuje podatke o njima u definiranu strukturu za zapis
+podataka o unesenim recenicama: tekst recenice, broj rijeci u recenici, rijec koja je u toj recenici
+prva po abecedi. Ovi podaci se programski odreduju nakon unosa recenice. Unos se prekida kada
+se unese rijec kraj koja se ne uzima u obradu. Nakon toga ispisuju se recenice sortirane po broju
+rijeci u recenici, silazno, odnosno prema abecedi izdvojene rijeci, ako je broj rijeci u recenici jednak*/
+
+struct recenice {
+	char tekst[30];
+	int broj_rijeci;
+	char prva_po_redu[30];
+
+};
+
+int analiza(char* string, char* prva_po_redu) {
+	char rijeci[10][30], pom[30];
+	int brojac = 0;
+	int i, j = 0, z = 0;
+
+	for (i = 0; i < strlen(string); i++) {
+		rijeci[j][z++] = string[i];
+			if (string[i] == ' ' || string[i+1] == '\0') {
+				brojac++;
+				rijeci[j][z++] = '\0';
+				j++;
+				z = 0;
+			}
+	}
+	for (i = 0; i < j-1; i++)
+		for (z = i + 1; z < j; z++)
+			if (strcmp(rijeci[i], rijeci[j]) > 0) {
+				strcpy(pom, rijeci[i]);
+				strcpy(rijeci[i], rijeci[z]);
+				strcpy(rijeci[z], pom);
+			}
+	strcpy(prva_po_redu, rijeci[0]);
+	return brojac;
+}
+
+int main()
+{
+	struct recenice r[30], pom;
+	int i = 0, j, broj_unesenih;
+	do {
+		fgets(r[i].tekst, 30, stdin);
+		if (strcmp("kraj\n", r[i].tekst) == 0) // KRAJ SE NE UZIMA U OBRADU
+			break;
+		
+		r[i].broj_rijeci = analiza(r[i].tekst, r[i].prva_po_redu);
+		i++;
+
+	} while (1);
+	broj_unesenih = i;
+	for (i = 0; i < broj_unesenih - 1; i++)
+		for (j = i + 1; j < broj_unesenih; j++)
+			if (r[i].broj_rijeci < r[j].broj_rijeci){
+				pom = r[i];
+				r[i] = r[j];
+				r[j] = pom;
+			}
+			else if ((r[i].broj_rijeci == r[j].broj_rijeci) && (strcmp(r[i].prva_po_redu, r[j].prva_po_redu) > 0)) {
+				pom = r[i];
+				r[i] = r[j];
+				r[j] = pom;
+			}
+	for (i = 0; i < broj_unesenih; i++)
+		printf("%s", r[i].tekst);
+	return 0;
+}
+
+
+PRVI KOLOKVIJ - GRUPA B:
+
+
+1.
+#include <stdio.h>
+#include <string.h>
+
+/*Napravi program koji unosi stringove sve dok se 4 puta uzastopno ne unesu stringovi
+sa istim brojem suglasnika. Nakon toga stringovi se sortiraju silazno po
+broju samoglasnika i ispisuju na ekran*/
+
+int prebroji_samoglasnike(char* string) {
+	int brojac = 0;
+	for (int i = 0; i < strlen(string); i++) {
+		if (string[i] == 'a' || string[i] == 'e' || string[i] == 'i' || string[i] == 'o' || string[i] == 'u')
+			brojac++;
+		if (string[i] == 'A' || string[i] == 'E' || string[i] == 'I' || string[i] == 'O' || string[i] == 'U')
+			brojac++;
+	}
+
+	return brojac;
+}
+
+int prebroji_suglasnike(char* string) {
+	int brojac = 0;
+	for (int i = 0; i < strlen(string); i++) {
+		if (string[i] >= 'A' && string[i] <= 'z') {
+			if (string[i] != 'a' && string[i] != 'e' && string[i] != 'i' && string[i] != 'o' && string[i] != 'u' || string[i] != 'A' && string[i] != 'E' && string[i] != 'I' && string[i] != 'O' && string[i] != 'U')
+				brojac++;
+		}
+	}
+
+	return brojac;
+}
+
+int main()
+{
+	char string[30][30], pomString[30];
+	int samoglasnici_stringova[30], kontrola = 0, brojac_suglasnika, i = 0, broj_unesenih = 0, j, pomInt;
+	while (kontrola < 4) {
+		fgets(string[i], 30, stdin);
+		brojac_suglasnika = prebroji_suglasnike(string[i]);
+		i++;
+		kontrola++;
+		while (1) {
+			fgets(string[i], 30, stdin);
+			i++;
+			kontrola++;
+			if (prebroji_suglasnike(string[i - 1]) != brojac_suglasnika) {
+				brojac_suglasnika = prebroji_suglasnike(string[i - 1]);
+				kontrola = 1;
+				continue;
+			}
+			else
+			{
+				fgets(string[i], 30, stdin);
+				i++;
+				kontrola++;
+				if (prebroji_suglasnike(string[i - 1]) != brojac_suglasnika) {
+					brojac_suglasnika = prebroji_suglasnike(string[i - 1]);
+					kontrola = 1;
+					continue;
+				}
+				else {
+					fgets(string[i], 30, stdin);
+					i++;
+					if (prebroji_suglasnike(string[i - 1]) != brojac_suglasnika) {
+						brojac_suglasnika = prebroji_suglasnike(string[i - 1]);
+						kontrola = 1;
+						continue;
+					}
+					else {
+						kontrola++;
+						printf("%d", kontrola);
+						break;
+					}
+				}
+			}
+
+		}
+	}
+	broj_unesenih = i;
+
+	for (i = 0; i < broj_unesenih; i++)
+		samoglasnici_stringova[i] = prebroji_samoglasnike(string[i]);
+
+	for (i = 0; i < broj_unesenih - 1; i++)
+		for (j = i + 1; j < broj_unesenih; j++)
+			if (samoglasnici_stringova[i] < samoglasnici_stringova[j]) {
+				pomInt = samoglasnici_stringova[i];
+				samoglasnici_stringova[i] = samoglasnici_stringova[j];
+				samoglasnici_stringova[j] = pomInt;
+				strcpy(pomString, string[i]);
+				strcpy(string[i], string[j]);
+				strcpy(string[j], pomString);
+			}
+
+	printf("\nSortirani stringovi:\n:");
+	for (i = 0; i < broj_unesenih; i++)
+		printf("%s", string[i]);
+
+	return 0;
+}
+
+2.
+#include <stdio.h>
+#include <string.h>
+
+/*Napravi program koji definira strukturu za zapis podataka o internet portalima: naziv
+portala, grad u kojem je sjediste, web adresa i broj pretplatnika. Program unosi podatke za 10 portala i
+ispisuje nazive mostarskih portala i njihove web adrese sortirane po broju pretplatnika, odnosno
+po abecedi naziva ako je broj pretplatnika isti*/
+
+struct internetportal {
+	char naziv[20];
+	char grad[20];
+	char web_adresa[20];
+	int broj_pretplatnika;
+};
+
+int main()
+{
+	struct internetportal ip[10], pom;
+	char pom2; //nakon scanf() za kapacitet, \n ide u pom2 od enter-a, na taj nacin \n ne ide u k[i].naziv u iducoj iteraciji
+	for (int i = 0; i < 5; i++) {
+		fgets(ip[i].naziv, 20, stdin);
+		fgets(ip[i].grad, 20, stdin);
+		fgets(ip[i].web_adresa, 20, stdin);
+		scanf("%d", &ip[i].broj_pretplatnika);
+		scanf("%c", &pom2);
+	}
+	for (int i = 0; i < 4; i++)
+		for (int j = i + 1; j < 5; j++)
+			if (ip[i].broj_pretplatnika > ip[j].broj_pretplatnika) {
+				pom = ip[i];
+				ip[i] = ip[j];
+				ip[j] = pom;
+			}
+			else if ((ip[i].broj_pretplatnika > ip[j].broj_pretplatnika) && (strcmp(ip[i].naziv, ip[j].naziv) > 0)) {
+				pom = ip[i];
+				ip[i] = ip[j];
+				ip[j] = pom;
+			}
+
+
+	for (int i = 0; i < 5; i++)
+		if(strcmp(ip[i].grad, "Mostar\n"))
+			printf("\nNaziv portala: %sSjediste: %sWeb adresa: %sBroj pretplatnika: %d\n", ip[i].naziv, ip[i].grad, ip[i].web_adresa, ip[i].broj_pretplatnika);
+
+	return 0;
+}
+
+3.
+#include <stdio.h>
+#include <string.h>
+
+/*Napravi program koji unosi recenice i pohranjuje podatke o njima u definiranu strukturu za zapis
+podataka o unesenim recenicama: tekst recenice, broj samoglasnika u recenici, rijec koja je u toj recenici
+zadnja po abecedi. Ovi podaci se programski odreduju nakon unosa recenice. Unos se prekida kada
+se unese rijec kraj koja se ne uzima u obradu. Nakon toga ispisuju se recenice sortirane po broju
+samoglasnika, uzlazno, odnosno prema abecedi izdvojene rijeci, ako je broj samoglasnika u recenici jednak*/
+
+struct recenice {
+	char tekst[30];
+	int broj_samoglasnika;
+	char prva_po_redu[30];
+
+};
+
+int analiza(char* string, char* prva_po_redu) {
+	char rijeci[10][30], pom[30];
+	int brojac = 0;
+	int i, j = 0, z = 0;
+
+	for (i = 0; i < strlen(string); i++) {
+		rijeci[j][z++] = string[i];
+		if (string[i] == 'a' || string[i] == 'e' || string[i] == 'i' || string[i] == 'o' || string[i] == 'u')
+			brojac++;
+		if (string[i] == 'A' || string[i] == 'E' || string[i] == 'I' || string[i] == 'O' || string[i] == 'U')
+			brojac++;
+		if (string[i] == ' ' || string[i + 1] == '\0') {
+			rijeci[j][z++] = '\0';
+			j++;
+			z = 0;
+		}
+	}
+	for (i = 0; i < j - 1; i++)
+		for (z = i + 1; z < j; z++)
+			if (strcmp(rijeci[i], rijeci[j]) < 0) {
+				strcpy(pom, rijeci[i]);
+				strcpy(rijeci[i], rijeci[z]);
+				strcpy(rijeci[z], pom);
+			}
+	strcpy(prva_po_redu, rijeci[0]);
+	return brojac;
+}
+
+int main()
+{
+	struct recenice r[30], pom;
+	int i = 0, j, broj_unesenih;
+	do {
+		fgets(r[i].tekst, 30, stdin);
+		if (strcmp("kraj\n", r[i].tekst) == 0) // KRAJ SE NE UZIMA U OBRADU
+			break;
+
+		r[i].broj_samoglasnika = analiza(r[i].tekst, r[i].prva_po_redu);
+		i++;
+
+	} while (1);
+	broj_unesenih = i;
+	for (i = 0; i < broj_unesenih - 1; i++)
+		for (j = i + 1; j < broj_unesenih; j++)
+			if (r[i].broj_samoglasnika > r[j].broj_samoglasnika) {
+				pom = r[i];
+				r[i] = r[j];
+				r[j] = pom;
+			}
+			else if ((r[i].broj_samoglasnika == r[j].broj_samoglasnika) && (strcmp(r[i].prva_po_redu, r[j].prva_po_redu) > 0)) {
+				pom = r[i];
+				r[i] = r[j];
+				r[j] = pom;
+			}
+	for (i = 0; i < broj_unesenih; i++)
+		printf("%s", r[i].tekst);
+	return 0;
+}
+
+
+DRUGI KOLOKVIJ - GRUPA A:
+
+
+
+
+DRUGI KOLOKVIJ - GRUPA B:
+
+1.
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+/*Napravi program koji dinamicki zauzima memoriju za 20 cijelih brojeva, unosi brojeve i ako je
+zbroj parnih unesenih brojeva veci od zbroja neparnih unesenih brojeva ispisuje poruku o
+prosjecnoj vrijednosti svih unesenih brojeva, uneseni broj najblizi tom prosjeku i njegovu poziciju
+u silazno sortiranom nizu, a u suprotnom ispisuje najmanji i najveci uneseni broj i sve pozitivne
+dvoznamenkaste parne unesene brojeve sortirane uzlazno. Program treba koristiti iskljucivo
+sintaksu pokazivaca.*/
+
+int main()
+{
+	int* niz = NULL, * parni = NULL, * neparni = NULL;
+	niz = (int*)malloc(sizeof(int) * 20);
+	parni = (int*)malloc(sizeof(int) * 20);
+	neparni = (int*)malloc(sizeof(int) * 20);
+	int *prosjek = (int*)malloc(sizeof(int));
+	int *zbroj_parnih = (int*)malloc(sizeof(int));
+	int *zbroj_neparnih = (int*)malloc(sizeof(int));
+	int *zbroj = (int*)malloc(sizeof(int));
+	int *min = (int*)malloc(sizeof(int));
+	int* max = (int*)malloc(sizeof(int));
+	int* razlika = (int*)malloc(sizeof(int));
+	int* najblizi = (int*)malloc(sizeof(int));
+	int* pom = (int*)malloc(sizeof(int));
+	int* pozicija = (int*)malloc(sizeof(int));
+
+
+	*zbroj = 0;
+	*zbroj_parnih = 0;
+	*zbroj_neparnih = 0;
+	for (int i = 0; i < 20; i++) {
+		niz = (int*)realloc(niz, (i + 1) * sizeof(int));
+		scanf("%d", niz + i);
+		if (niz[i] % 2 == 0) {
+			*zbroj_parnih += niz[i];
+		}
+		else {
+			*zbroj_neparnih += niz[i];
+		}
+		*zbroj += niz[i];
+	}
+
+	*min = niz[0];
+	*max = niz[0];
+	for (int i = 0; i < 20; i++) {
+		if (*max < niz[i])
+			*max = niz[i];
+		else if (*min > niz[i])
+			*min = niz[i];
+	}
+
+	if (*zbroj_parnih > *zbroj_neparnih) {
+		*prosjek = *zbroj / 20;
+		*razlika = niz[0] - *prosjek;
+
+		for (int i = 0; i < 19; i++)
+			for (int j = i + 1; j < 20; j++)
+				if (niz[i] < niz[j]) {
+					*pom = niz[i];
+					niz[i] = niz[j];
+					niz[j] = *pom;
+				}
+
+		for (int i = 0; i < 20; i++) {
+			if (*razlika > abs(niz[i] - *prosjek))
+				*razlika = abs(niz[i] - *prosjek);
+		}
+		for (int i = 0; i < 20; i++) {
+			if (*razlika == abs(niz[i] - *prosjek)) {
+				*najblizi = niz[i];
+				*pozicija = i;
+			}
+		}
+
+		
+	printf("Prosjek je %d, a najblizi broj je %d i ima poziciju %d u silaznom sortiranom nizu\n", *prosjek, *najblizi, (* pozicija + 1));
+
+	}
+	else {
+		printf("Minimum je %d\nMaksimum je %d\n", *min, *max);
+		for (int i = 0; i < 19; i++)
+			for (int j = i + 1; j < 20; j++)
+				if (niz[i] > niz[j]) {
+					*pom = niz[i];
+					niz[i] = niz[j];
+					niz[j] = *pom;
+				}
+		for (int i = 0; i < 20; i++) {
+			if ((niz[i] > 9 && niz[i] < 100) && (niz[i] % 2 == 0))
+				printf("%d\n", niz[i]);
+		}
+	}
+	free(niz);
+	free(parni);
+	free(neparni);
+	free(prosjek);
+	free(zbroj_parnih);
+	free(zbroj_neparnih);
+	free(min);
+	free(max);
+	free(razlika);
+	free(najblizi);
+	free(pom);
+	free(pozicija);
+	return 0;
+}
+
+
+2.
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+/*Napravi program koji unosi realne brojeve i smjesta ih u dinamicki alocirani prostor
+odgovarajuce velicine (realocirati za svaki unos) sve dok se ne unese broj ciji je decimalni
+dio manji od 0.05, a zatim ispisuje one brojeve broj ciji je suma znamenaka cijelog dijela parna,
+sortirane silazno. Program treba koristiti iskljucivo sintaksu pokazivaca.*/
+
+int main()
+{
+	
+	double *niz = NULL, * decimalni = NULL, * cijeli = NULL;
+	double *pom = (double*)malloc(sizeof(double));
+	double *zbroj = (double*)malloc(sizeof(double));
+	int* broj_unesenih = (int*)malloc(sizeof(int));
+	
+	int i = 0, j;
+
+	do {
+		niz = (double*)realloc(niz, (i + 1) * sizeof(double));
+		scanf("%lf", (niz + i));
+
+		decimalni = (double*)realloc(decimalni, (i + 1) * sizeof(double));
+		*(decimalni + i) = fabs(*(niz + i) - int(*(niz + i)));
+
+		cijeli = (double*)realloc(cijeli, (i + 1) * sizeof(double));
+		*(cijeli + i) = fabs(* (niz + i) - *(decimalni + i));
+
+		i++;
+	} while (decimalni[i-1] > 0.05);
+	*broj_unesenih = i;
+
+	for (i = 0; i < *(broj_unesenih)-1; i++)
+		for(j = i + 1; j < *broj_unesenih; j++)
+			if (niz[i] < niz[j]) {
+				*pom = *(niz + i);
+				*(niz + i) = *(niz + j);
+				*(niz + j) = *pom;
+			}
+
+	for (i = 0; i < *broj_unesenih; i++) {
+		*zbroj = 0;
+		while (*(cijeli + i) != 0) {
+			*pom = (int)*(cijeli + i) % 10;
+			*zbroj += *pom;
+			*(cijeli + i) /= 10;
+			*(cijeli + i) = int(*(cijeli + i));
+		}
+		if (((int)*zbroj % 2) == 0)
+			printf("%lf\n", *(niz + i));
+	}
+
+	free(niz);
+	free(cijeli);
+	free(decimalni);
+	free(zbroj);
+	free(pom);
+	free(broj_unesenih);
+	return 0;
+}
+
+
+3.
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+/*Napravi program koji iz datoteke podaci.txt cita sve rijeci i zatim u datoteku rezultat.txt zapisuje
+samo one rijeci u kojima su prvo i zadnje slovo samoglasnici te osim njih u rijeci nema drugih
+samoglasnika.*/
+
+int main()
+{
+	FILE* dat1, * dat2;
+	dat1 = fopen("podaci.txt", "r");
+	dat2 = fopen("rezultat.txt", "w");
+
+	char rijec[20];
+	int kontrola, i;
+	while (!feof(dat1)) {
+		fscanf(dat1, "%s", rijec);
+
+		kontrola = 0;
+		if (tolower(rijec[0]) == 'a' || tolower(rijec[0]) == 'e' || tolower(rijec[0]) == 'i' || tolower(rijec[0]) == 'o' || tolower(rijec[0]) == 'u')
+			kontrola++;
+		else
+			continue;
+		if (tolower(rijec[strlen(rijec)-1]) == 'a' || tolower(rijec[strlen(rijec) - 1]) == 'e' || tolower(rijec[strlen(rijec) - 1]) == 'i' || tolower(rijec[strlen(rijec) - 1]) == 'o' || tolower(rijec[strlen(rijec) - 1]) == 'u')
+			kontrola++;
+		else
+			continue;
+
+		for (i = 1; i < strlen(rijec) - 1; i++) {
+			if (tolower(rijec[i]) == 'a' || tolower(rijec[i]) == 'e' || tolower(rijec[i]) == 'i' || tolower(rijec[i]) == 'o' || tolower(rijec[i]) == 'u')
+			kontrola++;
+		}
+		if (kontrola == 2)
+			fprintf(dat2, "%s\n", rijec);
+	}
+
+	fclose(dat1);
+	fclose(dat2);
+	return 0;
+}
+
+4.
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+/*Napravi program koji iz datoteke brojevi.txt cita sve brojeve i pohranjuje ih u dinamicki
+alocirani prostor odgovarajuce duljine, a zatim u datoteku prosti-troznamenkasti.txt upisuje
+sve ucitane brojeve cija je apsolutna vrijednost prost broj silazno.*/
+
+int main()
+{
+	FILE* dat1, * dat2;
+	dat1 = fopen("brojevi.txt", "r");
+	dat2 = fopen("prosti_troznamenkasti.txt", "w");
+	int kontrola;
+	int* niz = NULL, pom;
+	int i = 0, j, i_max;
+	while (!feof(dat1)) {
+		niz = (int*)realloc(niz, (i + 1) * sizeof(int));
+		fscanf(dat1, "%d", (niz + i));
+		i++;
+	}
+	i_max = i;
+
+	for(i = 0; i < i_max - 1; i++)
+		for(j = i + 1; j < i_max; j++)
+			if (niz[i] < niz[j]) {
+				pom = *(niz + i);
+				*(niz + i) = *(niz + j);
+				*(niz + j) = pom;
+			}
+
+	for (i = 0; i < i_max; i++) {
+		kontrola = 0;
+		for (j = 2; j <= (niz[i] / 2); j++)
+			if (niz[i] % j == 0)
+				kontrola = 1;
+
+		if (niz[i] < 0)
+			niz[i] = abs(niz[i]);
+
+		if (niz[i] > 99 && niz[i] < 1000 && kontrola == 0) {
+			fprintf(dat2, "%d\n", niz[i]);
+		}
+	}
+	free(niz);
+	fclose(dat1);
+	fclose(dat2);
+	return 0;
+}
