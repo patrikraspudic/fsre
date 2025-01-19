@@ -1,0 +1,66 @@
+1.
+
+1. Deklariraju se potrebni nizovi za čuvanje ulaznog teksta (ulaz) i novog teksta (novi).
+
+2. Korisniku se prikazuje poruka da unese neki string.
+
+3. Koristi se funkcija gets() (koja je u stvari zastarjela jer je nesigurna) za čitanje ulaznog teksta od korisnika i pohranjivanje u niz ulaz.
+
+4. Nakon toga, prolazi se kroz svaki znak unesenog teksta u petlji for od početka do kraja teksta.
+
+5. Za svaki znak, provjerava se da li je znak isprintabilan korištenjem funkcije isprint(). Isprintabilan znak je svaki znak koji može biti prikazan na ekranu (npr. slova, brojevi, interpunkcijski znakovi itd.).
+
+6. Ako je znak isprintabilan, izračunava se ASCII kod tog znaka i zamjenjuje se grupom od tri znaka koji predstavljaju stotice, desetice i jedinice ASCII koda tog znaka. Ovaj dio se izvodi u linijama:
+
+novi[j++] = (ulaz[i] / 100) + '0'; // Stotine
+novi[j++] = ((ulaz[i] / 10) % 10) + '0'; // Desetice
+novi[j++] = (ulaz[i] % 10) + '0'; // Jedinični
+7. Nakon što se završi formiranje novog niza, dodaje se nula terminacija na kraj novog niza kako bi se označio kraj stringa.
+
+8. Na kraju, novi string se ispisuje na ekran.
+
+--------------------------------------------------------------------------------
+2.
+Korisnik unosi riječi sve dok se ne unese riječ u kojoj se neko slovo pojavljuje barem tri puta. Ovo se provjerava petljom do ... while.
+Nakon što se unese riječ koja zadovoljava uvjet (da se neko slovo pojavljuje barem tri puta), petlja za unos riječi se prekida.
+Nakon unosa riječi, program provjerava svaku riječ da li počinje i završava istim slovom, bez obzira na veličinu slova.
+Riječi koje zadovoljavaju uvjet počinjanja i završavanja istim slovom pohranjuju se u niz rijeci2.
+Nakon što su sve relevantne riječi pohranjene u niz rijeci2, program ih sortira silazno po abecedi.
+Na kraju, ispisuje sortirane riječi koje počinju i završavaju istim slovom.
+--------------------------------------------------------------------------------
+3.
+Korisnik unosi rečenicu.
+Rečenica se razbija na riječi i pohranjuje u niz rijeci.
+Nakon što su riječi pohranjene, program filtrira riječi koje imaju barem 4 slova i pohranjuje ih u niz rijeci2.
+Nakon filtriranja, program sortira riječi u nizu rijeci2 prema broju samoglasnika u riječi. Ako su brojevi samoglasnika isti, riječi se sortiraju prema duljini. Ako su i broj samoglasnika i duljina riječi isti, riječi se sortiraju po abecedi.
+Na kraju, program ispisuje sortirane riječi.
+--------------------------------------------------------------------------------
+4.
+1. Korisnik unosi stringove sve dok se ne unesu tri stringa iste duljine, ne nužno zaredom. Ovo se postiže petljom do ... while, gdje se provjerava broj pojavljivanja svake duljine stringa pomoću niza brojaclista. Čim se tri stringa iste duljine unesu, postavlja se flag na 1 i petlja se prekida.
+
+2. Nakon što su uneseni stringovi, sortiraju se po abecedi uzlazno koristeći funkciju stricmp() koja je napisana kao stricmp().
+
+3. Nakon sortiranja, izdvajaju se stringovi koji nisu ni prvi ni zadnji po abecedi. To se postiže kopiranjem sortiranih stringova između prvog i zadnjeg stringa u novi niz stringovi2.
+
+4. Zatim se stringovi u nizu stringovi2 sortiraju po broju suglasnika uzlazno.
+
+5. Na kraju, ispisuju se sortirani stringovi.
+
+Funkcija jelisuglasnik() provjerava je li zadani znak suglasnik ili ne i vraća odgovarajuću vrijednost (1 ako je suglasnik, 0 ako nije).
+
+Funkcija brojsuglasnika() broji koliko ima suglasnika u zadanom stringu i vraća taj broj.
+--------------------------------------------------------------------------------
+5.
+1.Korisnik unosi 10 rečenica pomoću petlje for, gdje svaka rečenica ima maksimalno 100 znakova. Nakon unosa svake rečenice, ako je posljednji znak novi red \n, zamjenjuje se nulom kako bi se uklonio novi red.
+
+2. Nakon unosa rečenica, program prolazi kroz svaku rečenicu i provjerava ponavljanje riječi koristeći funkciju provjeri_ponavljanje().
+
+3. Funkcija provjeri_ponavljanje() prima rečenicu kao argument i provjerava da li se u njoj neka riječ ponavlja barem dva puta.
+
+4. U funkciji provjeri_ponavljanje(), rečenica se razbija na riječi i pohranjuje u dvodimenzionalni niz rijec.
+
+5. Nakon što su sve riječi pohranjene, funkcija provjerava ponavljanje tako što uspoređuje svaku riječ s ostalim riječima u nizu.
+
+6. Ako se pronađe ponavljanje barem dva puta, funkcija vraća vrijednost 1 (istina) kako bi glavni program znao da je rečenica trebala biti ispisana.
+
+7. U glavnom programu, nakon provjere svih rečenica, ispisuju se samo one rečenice u kojima se neka riječ ponavlja barem dva puta.
