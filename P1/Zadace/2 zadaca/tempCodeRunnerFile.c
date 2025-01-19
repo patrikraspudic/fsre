@@ -1,0 +1,1 @@
+ int broj_samoglasnika = 0;
